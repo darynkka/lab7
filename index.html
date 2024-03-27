@@ -3,10 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Lab7</title>
 </head>
 <body>
-    
+    <button id="add-btn" class="menu-button" onclick="">Add item</button>
+    <button id="filter-btn" class="menu-button">Filter items</button>
+    <div id="product-form">
+        <input type="text" id="product-name" placeholder="Product name">
+        <input type="text" id="product-price" placeholder="Product price">
+        <input type="file" id="product-img">
+    </div>
+    <ul id="hero-ul"></ul>
+    <script src="index.js"></script>
 </body>
 </html>
