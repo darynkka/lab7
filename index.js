@@ -6,7 +6,7 @@ function addProduct() {
     const product_name = document.getElementById('product-name').value;
     const product_price = document.getElementById('product-price').value;
     const product_img = document.getElementById('product-img').files[0];
-    if (product_name && product_price && product_img !== " ") {
+    if (product_name && product_price && product_img) {
         addProductToList(product_name, product_price, product_img);
         productList.push({name: product_name, price: product_price, image: product_img});
     }
@@ -14,6 +14,7 @@ function addProduct() {
         alert("Invalid input. Please fill all the fields");
     }
 }
+
 function addProductToList(pr_name, pr_price, pr_image) {
     const item = document.createElement('li');
     item.className = "product-item";
@@ -22,11 +23,11 @@ function addProductToList(pr_name, pr_price, pr_image) {
     item_img.src = URL.createObjectURL(pr_image);
     item_img.className = "item-img";
 
-    const item_name = document.createElement('span'); // Змінив на <span>, щоб текст не можна було редагувати
+    const item_name = document.createElement('span'); 
     item_name.className = "item-name";
     item_name.textContent = pr_name;
 
-    const item_price = document.createElement('span'); // Змінив на <span>, щоб текст не можна було редагувати
+    const item_price = document.createElement('span'); 
     item_price.className = "item-price";
     item_price.textContent = pr_price;
 
@@ -50,11 +51,20 @@ function addProductToList(pr_name, pr_price, pr_image) {
 
     hero_ul.appendChild(item);
 }
+
 let add_button = document.getElementById('add-btn');
 
 add_button.addEventListener('click', ()=> {
+    document.getElementById('product-form').style.display = 'block';
+    document.getElementById('product-name').value = '';
+    document.getElementById('product-price').value = '';
+    document.getElementById('product-img').value = '';
+});
+
+document.getElementById('save-btn').addEventListener('click', () => {
+    document.getElementById('product-form').style.display = 'none';
     addProduct();
-})
+});
 
 document.addEventListener('click', function(event) {
     const target = event.target;
@@ -73,4 +83,14 @@ document.addEventListener('click', function(event) {
     }
 });
 
+document.getElementById('total-price-btn').addEventListener('click', calculateTotalPrice);
+
+function calculateTotalPrice() {
+    let total = 0;
+    const itemPrices = document.querySelectorAll('.item-price');
+    itemPrices.forEach(itemPrice => {
+        total += parseFloat(itemPrice.textContent);
+    });
+    alert(`Total price: ${total}`);
+}
 
