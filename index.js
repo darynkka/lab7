@@ -83,14 +83,38 @@ document.addEventListener('click', function(event) {
     }
 });
 
+const filter_text = document.getElementById('filter-input');
+let filter_btn = document.getElementById("filter-btn");
+function filterProducts() {
+    const items = document.querySelectorAll('.product-item');
+
+    items.forEach(item => {
+        const itemName = item.querySelector('.item-name').textContent.toLowerCase();
+        const shouldShow = itemName.includes(filter_text.value.toLowerCase()); 
+        item.style.display = shouldShow ? 'flex' : 'none'; 
+    });
+}
+filter_btn.addEventListener('click', () => {
+    filter_text.style.display = 'flex';
+    filterProducts();
+});
+
+
 document.getElementById('total-price-btn').addEventListener('click', calculateTotalPrice);
 
 function calculateTotalPrice() {
     let total = 0;
-    const itemPrices = document.querySelectorAll('.item-price');
-    itemPrices.forEach(itemPrice => {
-        total += parseFloat(itemPrice.textContent);
+    const item_prices = document.querySelectorAll('.item-price');
+    item_prices.forEach(item_price => {
+        total += parseFloat(item_price.textContent);
     });
     alert(`Total price: ${total}`);
 }
 
+function displayAll() {
+    const items = document.querySelectorAll('.product-item');
+    items.forEach(item => {
+        item.style.display = 'flex';
+    });
+}
+document.getElementById('display-btn').addEventListener('click', displayAll);

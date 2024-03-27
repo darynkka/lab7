@@ -98,3 +98,6 @@
   background-color: brown;
   transition: 0.4s;
 }
+#filter-input {
+  margin: 0 auto;
+}
