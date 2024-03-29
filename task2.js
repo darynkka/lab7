@@ -30,6 +30,10 @@ function addTask() {
 
   if (task_name && task_deadline) {
     addTaskToList(task_name, task_deadline);
+    task_list.push({
+      name: task_name,
+      deadline: task_deadline
+    });
   } else {
     alert("Fill the fields!");
   }
@@ -42,10 +46,20 @@ function addTaskToList(task_name, task_deadline) {
   item_name.className = "task-name";
   item_name.textContent = task_name;
 
-  const edit_btn = document.createElement("button");
-  edit_btn.className = "edit-task-button";
-  edit_btn.textContent = "Edit task";
+  const del_btn = document.createElement("button");
+  del_btn.className = "delete-task-button";
+  del_btn.textContent = "Delete task";
+  del_btn.addEventListener("click", function () {
 
+    task_card.remove();
+    const taskIndex = task_list.findIndex(
+      (task) => task.name === task_name && task.deadline === task_deadline
+    );
+    if (taskIndex !== -1) {
+      task_list.splice(taskIndex, 1);
+    }
+  });
+  
   const item_deadline = document.createElement("p");
   item_deadline.className = "task-deadline";
   item_deadline.textContent = task_deadline;
@@ -53,14 +67,43 @@ function addTaskToList(task_name, task_deadline) {
   const wrapper = document.createElement("div");
   wrapper.className = "deadline-wrapper";
   wrapper.appendChild(item_deadline);
-  wrapper.appendChild(edit_btn);
+  wrapper.appendChild(del_btn);
 
   task_card.appendChild(item_name);
   task_card.appendChild(wrapper);
 
   hero_container.appendChild(task_card);
   task_card.style.display = "block";
+
+  const taskIcon = document.createElement("div");
+  taskIcon.className = "task-icon";
+  wrapper.appendChild(taskIcon);
+
+  task_card.addEventListener("click", function () {
+      task_card.classList.toggle("completed");
+  });
 }
 
-
 add_btn.addEventListener("click", addTask);
+
+document.addEventListener("click", function (event) {
+  const target = event.target;
+
+  if (target.classList.contains("task-name")) {
+    const item = target.closest(".task-card");
+    const itemNameElement = item.querySelector(".task-name");
+    const newName = prompt("Введіть нову назву:", itemNameElement.textContent);
+
+    if (newName !== null) {
+      itemNameElement.textContent = newName;
+    }
+  } else if (target.classList.contains("task-deadline")) {
+    const item = target.closest(".task-card");
+    const itemPriceElement = item.querySelector(".task-deadline");
+    const newPrice = prompt("Введіть нову дату:", itemPriceElement.textContent);
+
+    if (newPrice !== null) {
+      itemPriceElement.textContent = newPrice;
+    }
+  }
+});
