@@ -25,8 +25,14 @@ btn_container.appendChild(sort_btn);
 hero_container.appendChild(btn_container);
 
 function addTask() {
-  const task_name = prompt("ВEnter task name:");
-  const task_deadline = prompt("Enter deadline (YYYY-MM-DDTHH):");
+  const task_name = prompt("Enter task name:");
+  const task_deadline = prompt("Enter deadline (YYYY-MM-DD):");
+
+  const date = new Date(task_deadline);
+  if (isNaN(date.getTime())) {
+    alert("Invalid date format. Please use the format YYYY-MM-DD ");
+    return;
+  }
 
   if (task_name && task_deadline) {
     addTaskToList(task_name, task_deadline);
@@ -107,3 +113,37 @@ document.addEventListener("click", function (event) {
     }
   }
 });
+
+sort_btn.addEventListener("click", sortTasks);
+
+function sortTasks() {
+  const sortOption = prompt("Choose sort option: 1 - by deadline, 2 - by name");
+
+  if (sortOption === "1") {
+    sortByDeadline();
+  } else if (sortOption === "2") {
+    sortByTaskName();
+  } else {
+    alert("Invalid input. Please enter the number from 1 to 3");
+  }
+}
+
+function sortByDeadline() {
+  task_list.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+  renderTasks();
+}
+
+function sortByTaskName() {
+  task_list.sort((a, b) => a.name.localeCompare(b.name));
+  renderTasks();
+}
+
+function renderTasks() {
+  hero_container.innerHTML = "";
+  hero_container.appendChild(container_title);
+  hero_container.appendChild(btn_container);
+
+  task_list.forEach((task) => {
+    addTaskToList(task.name, task.deadline);
+  });
+}
