@@ -38,12 +38,14 @@ function addTask() {
     addTaskToList(task_name, task_deadline);
     task_list.push({
       name: task_name,
-      deadline: task_deadline
+      deadline: task_deadline,
+      completed: false
     });
   } else {
     alert("Fill the fields!");
   }
 }
+
 function addTaskToList(task_name, task_deadline) {
   let task_card = document.createElement("div");
   task_card.className = "task-card";
@@ -55,17 +57,7 @@ function addTaskToList(task_name, task_deadline) {
   const del_btn = document.createElement("button");
   del_btn.className = "delete-task-button";
   del_btn.textContent = "Delete task";
-  del_btn.addEventListener("click", function () {
 
-    task_card.remove();
-    const taskIndex = task_list.findIndex(
-      (task) => task.name === task_name && task.deadline === task_deadline
-    );
-    if (taskIndex !== -1) {
-      task_list.splice(taskIndex, 1);
-    }
-  });
-  
   const item_deadline = document.createElement("p");
   item_deadline.className = "task-deadline";
   item_deadline.textContent = task_deadline;
@@ -75,41 +67,63 @@ function addTaskToList(task_name, task_deadline) {
   wrapper.appendChild(item_deadline);
   wrapper.appendChild(del_btn);
 
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.className = "task-checkbox";
+
+  checkbox.addEventListener("change", function () {
+    task_card.classList.toggle("card-completed");
+    item_name.classList.toggle("name-completed");
+  });
+
+  task_card.appendChild(checkbox);
   task_card.appendChild(item_name);
   task_card.appendChild(wrapper);
 
   hero_container.appendChild(task_card);
   task_card.style.display = "block";
 
-  const taskIcon = document.createElement("div");
-  taskIcon.className = "task-icon";
-  wrapper.appendChild(taskIcon);
-
-  task_card.addEventListener("click", function () {
-      task_card.classList.toggle("completed");
-  });
 }
+
+hero_container.addEventListener("click", function (event) {
+  if (event.target.classList.contains("delete-task-button")) {
+    const task_card = event.target.closest(".task-card");
+    const task_name = task_card.querySelector(".task-name").textContent;
+    const task_deadline = task_card.querySelector(".task-deadline").textContent;
+
+    task_card.remove();
+    const taskIndex = task_list.findIndex(
+      (task) => task.name === task_name && task.deadline === task_deadline
+    );
+    if (taskIndex !== -1) {
+      task_list.splice(taskIndex, 1);
+    }
+  }
+});
 
 add_btn.addEventListener("click", addTask);
 
-document.addEventListener("click", function (event) {
+hero_container.addEventListener("click", function (event) {
   const target = event.target;
 
   if (target.classList.contains("task-name")) {
-    const item = target.closest(".task-card");
-    const itemNameElement = item.querySelector(".task-name");
-    const newName = prompt("Введіть нову назву:", itemNameElement.textContent);
+    const task_card = target.closest(".task-card");
+    const taskNameElement = task_card.querySelector(".task-name");
+    const newName = prompt("Введіть нову назву:", taskNameElement.textContent);
 
     if (newName !== null) {
-      itemNameElement.textContent = newName;
+      taskNameElement.textContent = newName;
     }
   } else if (target.classList.contains("task-deadline")) {
-    const item = target.closest(".task-card");
-    const itemPriceElement = item.querySelector(".task-deadline");
-    const newPrice = prompt("Введіть нову дату:", itemPriceElement.textContent);
+    const task_card = target.closest(".task-card");
+    const taskDeadlineElement = task_card.querySelector(".task-deadline");
+    const newDeadline = prompt("Введіть нову дату:", taskDeadlineElement.textContent);
 
-    if (newPrice !== null) {
-      itemPriceElement.textContent = newPrice;
+    const date = new Date(newDeadline);
+    if (isNaN(date.getTime())) {
+      alert("Invalid date format. Please use the format YYYY-MM-DD ");
+    } else if (newDeadline !== null) {
+      taskDeadlineElement.textContent = newDeadline;
     }
   }
 });
@@ -145,5 +159,11 @@ function renderTasks() {
 
   task_list.forEach((task) => {
     addTaskToList(task.name, task.deadline);
+    const taskCard = hero_container.lastElementChild;
+    if (task.completed) {
+      taskCard.classList.add("card-completed");
+      taskCard.querySelector(".task-name").classList.add("name-completed");
+      taskCard.querySelector(".task-checkbox").checked = true;
+    }
   });
 }

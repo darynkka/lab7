@@ -188,7 +188,7 @@
 /* TASK 2 STYLES */
 .tasks-container {
   width: 320px;
-  background-color: rgba(97, 95, 89, 0.2);
+  background-color: rgb(177 134 3 / 30%);
   height: auto;
   border-radius: 4px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
@@ -226,7 +226,7 @@
 
 .task-card {
   width: 290px;
-  background-color:#fbf3d5;
+  background-color: #fffcf3;
   height: auto;
   border-radius: 6px;
   margin-top: 20px;
@@ -256,10 +256,6 @@
   background-color: #f7f7f7;
 }
 
-.task-card.completed .task-icon::before {
-  content: "✓";
-  margin-right: 5px;
-}
 
 .task-name {
   font-size: 17px;
@@ -280,7 +276,6 @@
   font-weight: 400;
   margin-left: 10px;
   margin-top: 2px;
-  color: #777;
   text-align: left;
   word-wrap: break-word;
 }
@@ -297,4 +292,18 @@
   background-color: #96aca6;
   font-weight: 400;
   text-wrap: nowrap;
+}
+.task-checkbox {
+  position: absolute;
+  left: 260px;
+  top: 6px;
+}
+.card-completed,
+.card-completed:hover {
+  box-shadow: 1px 1px 4px green;
+  transition: 0.3s;
+}
+
+.name-completed {
+  text-decoration: line-through;
 }

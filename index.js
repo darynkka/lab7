@@ -38,18 +38,18 @@ function addProductToList(pr_name, pr_price, pr_image) {
   delete_btn.textContent = "Delete product";
   delete_btn.className = "item-delete";
 
-  delete_btn.addEventListener("click", function () {
-    item.remove();
-    const index = productList.findIndex(
-      (product) =>
-        product.name === pr_name &&
-        product.price === pr_price &&
-        product.image === pr_image
-    );
-    if (index !== -1) {
-      productList.splice(index, 1);
-    }
-  });
+  // delete_btn.addEventListener("click", function () {
+  //   item.remove();
+  //   const index = productList.findIndex(
+  //     (product) =>
+  //       product.name === pr_name &&
+  //       product.price === pr_price &&
+  //       product.image === pr_image
+  //   );
+  //   if (index !== -1) {
+  //     productList.splice(index, 1);
+  //   }
+  // });
 
   item.appendChild(item_img);
   item.appendChild(item_name);
@@ -157,3 +157,23 @@ function displayAll() {
   });
 }
 document.getElementById("display-btn").addEventListener("click", displayAll);
+
+hero_ul.addEventListener("click", function (event) {
+  if (event.target.classList.contains("item-delete")) { // перевіряю чи це кнопка видалення
+    const item = event.target.closest(".product-item"); // шукаю найближчого батька і видаляю його з списку
+    const pr_name = item.querySelector(".item-name").textContent;
+    const pr_price = item.querySelector(".item-price").textContent;
+    const pr_image = item.querySelector(".item-img").src;
+
+    item.remove();
+    const index = productList.findIndex(
+      (product) =>
+        product.name === pr_name &&
+        product.price === pr_price &&
+        product.image === pr_image
+    );
+    if (index !== -1) {
+      productList.splice(index, 1);
+    }
+  }
+});
